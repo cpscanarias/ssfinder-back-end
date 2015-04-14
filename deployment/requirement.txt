@@ -1,0 +1,2 @@
+# Core
+Django==1.8
