@@ -1,3 +1,4 @@
 *.pyc
 *.pyo
 *~
+ssfinder_back_end/ssfinder_back_end/projects_settings/secret.py
