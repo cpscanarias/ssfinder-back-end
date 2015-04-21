@@ -32,13 +32,17 @@ DJANGO_APPS = (
     'django.contrib.staticfiles',
 )
 
-THIRD_PARTY_APPS = ()
+THIRD_PARTY_APPS = (
+    'rest_framework',
+)
 
 TESTING_APPS = ()
 
 DEBUG_APPS = ()
 
-CUSTOM_APPS = ()
+CUSTOM_APPS = (
+    'social_service',
+)
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
