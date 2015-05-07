@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.core.urlresolvers import reverse
 
 from social_service.test.factories import CategoryFactory, AACCFactory, \
-    ProvinceFactory, TownFactory
+    ProvinceFactory, TownFactory, SocialServiceFactory
 
 
 class CategoryViewsTest(TestCase):
@@ -66,7 +66,6 @@ class TownsViewsTest(TestCase):
         response = self.client.get(reverse('social_service:towns'))
         self.assertContains(response, town.name)
         self.assertContains(response, town.id)
-        self.assertContains(response, town.code)
         self.assertContains(response, province.id)
 
 
@@ -84,4 +83,66 @@ class TownsViewsTest(TestCase):
         )
         self.assertContains(response, town.name)
         self.assertContains(response, town.id)
-        self.assertContains(response, town.code)
+
+
+class SocialServicesViewsTest(TestCase):
+
+    def test_list_of_social_services(self):
+        aacc = AACCFactory()
+        aacc.save()
+        province = ProvinceFactory(aacc=aacc)
+        province.save()
+        town = TownFactory(province=province)
+        town.save()
+        category = CategoryFactory()
+        category.save()
+        social_service = SocialServiceFactory(town=town)
+        social_service.save()
+        social_service.categories.add(category)
+        response = self.client.get(reverse('social_service:social_services'))
+        self.assertContains(response, town.name)
+        self.assertContains(response, town.province.name)
+        self.assertContains(response, social_service.name)
+
+
+    def test_list_of_social_services_sumary(self):
+        aacc = AACCFactory()
+        aacc.save()
+        province = ProvinceFactory(aacc=aacc)
+        province.save()
+        town = TownFactory(province=province)
+        town.save()
+        category = CategoryFactory()
+        category.save()
+        social_service = SocialServiceFactory(town=town)
+        social_service.save()
+        social_service.categories.add(category)
+
+        response = self.client.get(
+            reverse('social_service:social_services_summary')
+        )
+        self.assertContains(response, town.name)
+        self.assertContains(response, town.province.name)
+        self.assertContains(response, social_service.name)
+
+    def test_item_of_social_services(self):
+        aacc = AACCFactory()
+        aacc.save()
+        province = ProvinceFactory(aacc=aacc)
+        province.save()
+        town = TownFactory(province=province)
+        town.save()
+        category = CategoryFactory()
+        category.save()
+        social_service = SocialServiceFactory(town=town)
+        social_service.save()
+        social_service.categories.add(category)
+
+        response = self.client.get(
+            reverse('social_service:social_service', 
+                kwargs={'pk': social_service.pk},
+            )
+        )
+        self.assertContains(response, town.name)
+        self.assertContains(response, town.province.name)
+        self.assertContains(response, social_service.name)

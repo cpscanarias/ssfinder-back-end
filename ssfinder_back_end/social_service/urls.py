@@ -2,7 +2,8 @@ from django.contrib import admin
 from django.conf.urls import include, url, patterns
 
 from social_service.views import CategoriesList, AACCsList, ProvincesList, \
-    ProvincesByAACCList, TownList, TownByProvinceList
+    ProvincesByAACCList, TownList, TownByProvinceList, SocialServicesList, \
+    SocialServicesSummaryList, SocialServiceItem
 
 admin.autodiscover()
 
@@ -30,6 +31,18 @@ social_service_urlpatterns = patterns('',
     url(r'^towns_by_province/(?P<id>\d+)/$', 
         TownByProvinceList.as_view(), 
         name="towns_by_province"
+    ),
+    url(r'^social_services/$', 
+        SocialServicesList.as_view(), 
+        name="social_services"
+    ),
+    url(r'^social_services_summary/$', 
+        SocialServicesSummaryList.as_view(), 
+        name="social_services_summary"
+    ),
+    url(r'^social_service/(?P<pk>\d+)/$', 
+        SocialServiceItem.as_view(), 
+        name="social_service"
     ),
 )
 

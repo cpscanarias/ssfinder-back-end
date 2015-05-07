@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-from social_service.models import Category, AACC, Province, Town
+from social_service.models import Category, AACC, Province, Town, \
+    SocialService
 
 
 class CategoryAdmin(admin.ModelAdmin):
@@ -28,7 +29,14 @@ class TownAdmin(admin.ModelAdmin):
     	return ('name', 'province')
 
 
+class SocialServiceAdmin(admin.ModelAdmin):
+
+    def get_list_display(self, request):
+        return ('name', 'address', 'town', 'phone', 'email')
+
+
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(AACC, AACCAdmin)
 admin.site.register(Province, ProvinceAdmin)
 admin.site.register(Town, TownAdmin)
+admin.site.register(SocialService, SocialServiceAdmin)

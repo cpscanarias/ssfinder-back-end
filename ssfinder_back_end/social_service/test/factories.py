@@ -1,6 +1,7 @@
 import factory
 
-from social_service.models import Category, AACC, Province, Town
+from social_service.models import Category, AACC, Province, Town, \
+    SocialService
 
 class CategoryFactory(factory.Factory):
     class Meta:
@@ -31,5 +32,17 @@ class TownFactory(factory.Factory):
         model = Town
     
     province = factory.SubFactory(ProvinceFactory)
-    code = factory.Sequence(lambda n: 'to%s' % n)
     name = factory.Sequence(lambda n: 'Town %s' % n)
+
+class SocialServiceFactory(factory.Factory):
+    class Meta:
+        model = SocialService
+    
+    name = factory.Sequence(lambda n: 'Name %s' % n)
+    address = factory.Sequence(lambda n: 'Address %s' % n)
+    postal_code = factory.Sequence(lambda n: 'CP %s' % n)
+    town = factory.SubFactory(TownFactory)
+    phone = factory.Sequence(lambda n: 'Phone %s' % n)
+    email = factory.Sequence(lambda n: 'email%s@ssfinder.org' % n)
+    description = factory.Sequence(lambda n: 'Description %s' % n)
+    web = factory.Sequence(lambda n: 'www.web%s.org' % n)
