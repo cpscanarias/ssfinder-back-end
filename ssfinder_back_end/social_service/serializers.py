@@ -71,3 +71,12 @@ class SocialServiceSummarySerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'categories', 'town', 'province', 'web', 
             'facebook', 'twitter', 'instagram', 'google_plus', 'tumblr'
         )
+
+
+class SocialServiceAddressSerializer(serializers.ModelSerializer):
+    province = serializers.ReadOnlyField(source='town.province.name')
+    town = serializers.ReadOnlyField(source='town.name')
+    
+    class Meta:
+        model = SocialService
+        fields = ('name', 'address', 'postal_code', 'town', 'province',)
