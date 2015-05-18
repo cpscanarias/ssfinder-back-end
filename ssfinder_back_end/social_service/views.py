@@ -69,5 +69,5 @@ class SocialServicesSummaryList(generics.ListAPIView):
 
 class SocialServiceItem(generics.RetrieveAPIView):
     renderer_classes = (JSONRenderer, )
-    serializer_class = SocialServiceSummarySerializer
+    serializer_class = SocialServiceSerializer
     queryset = SocialService.objects.all()
