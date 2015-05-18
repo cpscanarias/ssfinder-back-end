@@ -85,3 +85,14 @@ class SocialServicesAddressesList(generics.ListAPIView):
     renderer_classes = (JSONRenderer, )
     serializer_class = SocialServiceAddressSerializer
     queryset = SocialService.objects.all()
+
+class SocialServicesCountView(APIView):
+    """
+    A view that returns the count of social services
+    """
+    renderer_classes = (JSONRenderer, )
+
+    def get(self, request, format=None):
+        social_services_count = SocialService.objects.count()
+        content = {'social_services_count':social_services_count}
+        return Response(content)
