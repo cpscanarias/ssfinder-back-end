@@ -2,6 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.renderers import JSONRenderer
 from rest_framework import generics
+from rest_framework.pagination import PageNumberPagination
 
 from social_service.models import Category, AACC, Province, Town, \
     SocialService
@@ -55,16 +56,24 @@ class TownByProvinceList(generics.ListAPIView):
         return  Town.objects.filter(province=province)
 
 
+class StandardResultsSetPagination(PageNumberPagination):
+    page_size = 2
+    page_size_query_param = 'page_size'
+    max_page_size = 2
+
+
 class SocialServicesList(generics.ListAPIView):
     renderer_classes = (JSONRenderer, )
     serializer_class = SocialServiceSerializer
     queryset = SocialService.objects.all()
+    pagination_class = StandardResultsSetPagination
 
 
 class SocialServicesSummaryList(generics.ListAPIView):
     renderer_classes = (JSONRenderer, )
     serializer_class = SocialServiceSummarySerializer
     queryset = SocialService.objects.all()
+    pagination_class = StandardResultsSetPagination
 
 
 class SocialServiceItem(generics.RetrieveAPIView):
