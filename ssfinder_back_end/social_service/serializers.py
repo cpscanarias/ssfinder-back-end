@@ -43,6 +43,11 @@ class TownWithoutProvinceSerializer(serializers.ModelSerializer):
 class SocialServiceSerializer(serializers.ModelSerializer):
     province = serializers.ReadOnlyField(source='town.province.name')
     town = serializers.ReadOnlyField(source='town.name')
+    categories = serializers.SlugRelatedField(
+        many=True,
+        read_only=True,
+        slug_field='name'
+    )
 
     class Meta:
         model = SocialService
@@ -55,7 +60,12 @@ class SocialServiceSerializer(serializers.ModelSerializer):
 class SocialServiceSummarySerializer(serializers.ModelSerializer):
     province = serializers.ReadOnlyField(source='town.province.name')
     town = serializers.ReadOnlyField(source='town.name')
-
+    categories = serializers.SlugRelatedField(
+        many=True,
+        read_only=True,
+        slug_field='name'
+    )
+    
     class Meta:
         model = SocialService
         fields = ('id', 'name', 'categories', 'town', 'province', 'web', 
