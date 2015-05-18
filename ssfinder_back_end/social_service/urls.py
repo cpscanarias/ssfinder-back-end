@@ -4,7 +4,7 @@ from django.conf.urls import include, url, patterns
 from social_service.views import CategoriesList, AACCsList, ProvincesList, \
     ProvincesByAACCList, TownList, TownByProvinceList, SocialServicesList, \
     SocialServicesSummaryList, SocialServiceItem, \
-    SocialServicesAddressesList
+    SocialServicesAddressesList, SocialServicesCountView
 
 admin.autodiscover()
 
@@ -48,6 +48,10 @@ social_service_urlpatterns = patterns('',
     url(r'^social_services_addresses/$', 
         SocialServicesAddressesList.as_view(), 
         name="social_services_addresses"
+    ),
+    url(r'^social_services_count/$', 
+        SocialServicesCountView.as_view(), 
+        name="social_services_count"
     ),
 )
 

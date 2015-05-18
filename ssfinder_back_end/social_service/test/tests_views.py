@@ -1,6 +1,8 @@
 from django.test import TestCase
 from django.core.urlresolvers import reverse
 
+from social_service.models import SocialService
+
 from social_service.test.factories import CategoryFactory, AACCFactory, \
     ProvinceFactory, TownFactory, SocialServiceFactory
 
@@ -166,3 +168,23 @@ class SocialServicesViewsTest(TestCase):
         self.assertContains(response, town.name)
         self.assertContains(response, town.province.name)
         self.assertContains(response, social_service.name)
+
+
+
+    def test_social_serviceses_count(self):
+        aacc = AACCFactory()
+        aacc.save()
+        province = ProvinceFactory(aacc=aacc)
+        province.save()
+        town = TownFactory(province=province)
+        town.save()
+        category = CategoryFactory()
+        category.save()
+        social_service = SocialServiceFactory(town=town)
+        social_service.save()
+        social_service.categories.add(category)
+
+        response = self.client.get(
+            reverse('social_service:social_services_count')
+        )
+        self.assertContains(response, str(SocialService.objects.count()))
