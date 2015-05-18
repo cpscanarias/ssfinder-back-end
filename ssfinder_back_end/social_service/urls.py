@@ -3,7 +3,8 @@ from django.conf.urls import include, url, patterns
 
 from social_service.views import CategoriesList, AACCsList, ProvincesList, \
     ProvincesByAACCList, TownList, TownByProvinceList, SocialServicesList, \
-    SocialServicesSummaryList, SocialServiceItem
+    SocialServicesSummaryList, SocialServiceItem, \
+    SocialServicesAddressesList
 
 admin.autodiscover()
 
@@ -43,6 +44,10 @@ social_service_urlpatterns = patterns('',
     url(r'^social_service/(?P<pk>\d+)/$', 
         SocialServiceItem.as_view(), 
         name="social_service"
+    ),
+    url(r'^social_services_addresses/$', 
+        SocialServicesAddressesList.as_view(), 
+        name="social_services_addresses"
     ),
 )
 

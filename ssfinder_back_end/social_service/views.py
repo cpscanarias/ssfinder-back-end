@@ -9,7 +9,7 @@ from social_service.models import Category, AACC, Province, Town, \
 from social_service.serializers import CategorySerializer, AACCSerializer, \
     ProvinceSerializer, ProvinceWithoutAACCSerializer, TownSerializer, \
     TownWithoutProvinceSerializer, SocialServiceSerializer, \
-    SocialServiceSummarySerializer
+    SocialServiceSummarySerializer, SocialServiceAddressSerializer
 
 
 class CategoriesList(generics.ListAPIView):
@@ -79,4 +79,9 @@ class SocialServicesSummaryList(generics.ListAPIView):
 class SocialServiceItem(generics.RetrieveAPIView):
     renderer_classes = (JSONRenderer, )
     serializer_class = SocialServiceSerializer
+    queryset = SocialService.objects.all()
+
+class SocialServicesAddressesList(generics.ListAPIView):
+    renderer_classes = (JSONRenderer, )
+    serializer_class = SocialServiceAddressSerializer
     queryset = SocialService.objects.all()

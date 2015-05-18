@@ -146,3 +146,23 @@ class SocialServicesViewsTest(TestCase):
         self.assertContains(response, town.name)
         self.assertContains(response, town.province.name)
         self.assertContains(response, social_service.name)
+
+    def test_list_of_social_services_addresses(self):
+        aacc = AACCFactory()
+        aacc.save()
+        province = ProvinceFactory(aacc=aacc)
+        province.save()
+        town = TownFactory(province=province)
+        town.save()
+        category = CategoryFactory()
+        category.save()
+        social_service = SocialServiceFactory(town=town)
+        social_service.save()
+        social_service.categories.add(category)
+
+        response = self.client.get(
+            reverse('social_service:social_services_addresses')
+        )
+        self.assertContains(response, town.name)
+        self.assertContains(response, town.province.name)
+        self.assertContains(response, social_service.name)
