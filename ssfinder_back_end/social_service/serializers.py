@@ -79,4 +79,6 @@ class SocialServiceAddressSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = SocialService
-        fields = ('name', 'address', 'postal_code', 'town', 'province',)
+        fields = ('name', 'address', 'postal_code', 'town', 'province',
+            'phone',
+        )
