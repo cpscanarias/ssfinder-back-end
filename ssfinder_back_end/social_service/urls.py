@@ -4,7 +4,8 @@ from django.conf.urls import include, url, patterns
 from social_service.views import CategoriesList, AACCsList, ProvincesList, \
     ProvincesByAACCList, TownList, TownByProvinceList, SocialServicesList, \
     SocialServicesSummaryList, SocialServiceItem, \
-    SocialServicesAddressesList, SocialServicesCountView
+    SocialServicesAddressesList, SocialServicesCountView, \
+    SocialServicesSummarySearchList 
 
 admin.autodiscover()
 
@@ -52,6 +53,10 @@ social_service_urlpatterns = patterns('',
     url(r'^social_services_count/$', 
         SocialServicesCountView.as_view(), 
         name="social_services_count"
+    ),
+    url(r'^social_services_search/(?P<words>(\w+/)+)$', 
+        SocialServicesSummarySearchList.as_view(), 
+        name="social_services_search"
     ),
 )
 
