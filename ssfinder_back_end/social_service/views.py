@@ -1,3 +1,5 @@
+import collections
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.renderers import JSONRenderer
@@ -96,3 +98,85 @@ class SocialServicesCountView(APIView):
         social_services_count = SocialService.objects.count()
         content = {'social_services_count':social_services_count}
         return Response(content)
+
+
+class SocialServicesSummarySearchList(generics.ListAPIView):
+    renderer_classes = (JSONRenderer, )
+    serializer_class = SocialServiceSummarySerializer
+    queryset = SocialService.objects.all()
+    pagination_class = StandardResultsSetPagination
+
+    def get_queryset(self):
+        """
+        This view should return a list of social services
+        filtering by words url parameters. For a user search by
+        words
+        """
+        url_words = self.kwargs['words']
+        words = url_words.split("/")[:-1]
+
+        social_services = SocialService.objects.all()
+        ss_search = {}
+        
+        for w in words:
+            for ss in social_services:
+                # Filter in the name (5 points)
+                if w.lower() in ss.name.lower():
+                    if str(ss.pk) in ss_search:
+                        ss_search[str(ss.pk)] += 5
+                    else:
+                        ss_search[str(ss.pk)] = 5
+                # Filter in the categories (2 points)
+                for c in ss.categories.all():
+                    if w.lower() in c.name.lower():
+                        if str(ss.pk) in ss_search:
+                            ss_search[str(ss.pk)] += 2
+                        else:
+                            ss_search[str(ss.pk)] = 2
+                # Filter in the address (2 points)
+                if w.lower() in ss.address.lower():
+                    if str(ss.pk) in ss_search:
+                        ss_search[str(ss.pk)] += 2
+                    else:
+                        ss_search[str(ss.pk)] = 2
+                # Filter in the town (2 points)
+                if w.lower() in ss.town.name.lower():
+                    if str(ss.pk) in ss_search:
+                        ss_search[str(ss.pk)] += 2
+                    else:
+                        ss_search[str(ss.pk)] = 2
+                # Filter in the province (1 points)
+                if w.lower() in ss.town.province.name.lower():
+                    if str(ss.pk) in ss_search:
+                        ss_search[str(ss.pk)] += 1
+                    else:
+                        ss_search[str(ss.pk)] = 1
+                # Filter in the AACC (1 points)
+                if w.lower() in ss.town.province.aacc.name.lower():
+                    if str(ss.pk) in ss_search:
+                        ss_search[str(ss.pk)] += 1
+                    else:
+                        ss_search[str(ss.pk)] = 1
+                # Filter in the description (2 points)
+                if w.lower() in ss.description.lower():
+                    if str(ss.pk) in ss_search:
+                        ss_search[str(ss.pk)] += 2
+                    else:
+                        ss_search[str(ss.pk)] = 2
+                # Filter in the web (2 points)
+                if w.lower() in ss.web.lower():
+                    if str(ss.pk) in ss_search:
+                        ss_search[str(ss.pk)] += 3
+                    else:
+                        ss_search[str(ss.pk)] = 3
+
+        ordered_ss_search = collections.OrderedDict(sorted(ss_search.items()))
+        final_ss_search = []
+        for k, v in ordered_ss_search.iteritems():
+            for ss in social_services:
+                if str(ss.pk) == k:
+                    final_ss_search.append(ss)
+                    break
+
+        return final_ss_search
+
